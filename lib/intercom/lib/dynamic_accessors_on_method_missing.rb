@@ -5,7 +5,9 @@ module Intercom
       attr_reader :method_sym, :method_string, :arguments, :object, :klass
 
       def initialize(method_sym, *arguments, object)
-        @method_sym = method_sym
+        safe_method_name = method_sym.to_s.tr("-", "_")
+
+        @method_sym = safe_method_name.to_sym
         @method_string = method_sym.to_s
         @arguments = arguments
         @klass = object.class

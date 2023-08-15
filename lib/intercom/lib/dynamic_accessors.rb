@@ -41,15 +41,16 @@ module Intercom
         end
 
         def define_standard_accessors(attribute, value, object)
-            object.instance_eval %Q"
-              def #{attribute}=(value)
-                mark_field_as_changed!(:#{attribute})
-                @#{attribute} = value
-              end
-              def #{attribute}
-                @#{attribute}
-              end
-            "
+          safe_name = attribute.to_s.tr("-", "_").to_sym
+          object.instance_eval %Q"
+            def #{safe_name}=(value)
+              mark_field_as_changed!(:'#{safe_name}')
+              @#{safe_name} = value
+            end
+            def #{safe_name}
+              @#{safe_name}
+            end
+          "
         end
 
       end
